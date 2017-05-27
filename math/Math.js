@@ -1,3 +1,28 @@
+//tzx：
+//  -   两个常量：DEG2RAG 和 RAD2DEG
+//  -   UUID 函数
+//  -   clamp 函数：clamp(value, min, max)，特别常用
+//  -   euclidian modulo of m % n，这是啥？
+//  -   mapLinear：Linear mapping from range <a1, a2> to range <b1, b2>
+//  -   lerp 这个没啥好说的，lerp(a,b,t)
+//  -   smoothstep
+//      -   {0，3*x^2 - 2*x^3，1}，运算的时候把 x 提出来最好
+//      -   需要 clamp
+//      -   [Smoothstep - Wikipedia](https://en.wikipedia.org/wiki/Smoothstep)
+//      -   ![](https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Smoothstep_and_Smootherstep.svg/330px-Smoothstep_and_Smootherstep.svg.png)
+//  -   smootherstep：就是 6*x^5-15*x^4+10*x^3
+//  -   randInt：因为 Math.random() 只是 0~1，所以用 randInt(a,b) 缩放到 a~b，
+//      注意这里：low + Math.floor( Math.random() * ( high - low + 1 ) )，因为这里
+//      的 int 的长度是 high-low+1
+//  -   randFloat：就不存在长度上的问题，看上去更简洁了。
+//  -   randFloatSpread，randFloatSpread(range) 的范围是 (-range/2,range/2)
+//  -   rad2deg, deg2rad
+//  -   isPowerOfTwo，这里的处理顺序也有点意思，通常都不会传入 0，所以后判断：`( value & ( value - 1 ) ) === 0 && value !== 0` 这里用了判断 1 的个数。
+//  -   Math.LN2：The Math.LN2 property represents the natural logarithm of 2, approximately 0.693: Math.LN2=ln(2)≈0.693，还有 LN10。
+//      这里说了是 natual log，所以底是 e。
+//  -   nearestPowerOfTwo：这里其实不一定是 nearest 的把……`Math.pow( 2, Math.round( Math.log( value ) / Math.LN2 ) )`
+//  -   nextPowerOfTwo：这个特么是什么鬼？
+
 /**
  * @author alteredq / http://alteredqualia.com/
  * @author mrdoob / http://mrdoob.com/
@@ -17,6 +42,12 @@ var _Math = {
         var rnd = 0, r;
 
         return function generateUUID() {
+
+            //tzx：
+            //  -   36 位
+            //  -   带分隔符“-”
+            //  -   A more performant, but slightly bulkier, RFC4122v4 solution.  We boost performance
+            //      by minimizing calls to random()
 
             for ( var i = 0; i < 36; i ++ ) {
 
@@ -54,6 +85,7 @@ var _Math = {
     // compute euclidian modulo of m % n
     // https://en.wikipedia.org/wiki/Modulo_operation
 
+    //tzx?
     euclideanModulo: function ( n, m ) {
 
         return ( ( n % m ) + m ) % m;
